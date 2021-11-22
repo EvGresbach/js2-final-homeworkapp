@@ -13,8 +13,8 @@ Vue.use(VueRouter)
 
 const router = new VueRouter({
     routes: [
-        {path: '/', component: Home},
-        {name: 'home', path: '/home', component: Home},
+        {path: '/', component: Home, props: true,},
+        {name: 'home', path: '/home', component: Home, props: true,},
         {name: 'classes', path: '/classes', component: Classes},
         {name: 'my-day', path: '/my-day', component: MyDay},
         {name: 'achievements', path: '/achievements', component: Achievements},
