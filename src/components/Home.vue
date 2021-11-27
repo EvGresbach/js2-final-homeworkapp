@@ -2,8 +2,8 @@
   <v-container>
     <v-row>
       <v-col sm="12" md="8">
-        <!-- Weclome message -->
-        <h1>Welcome back <span v-if="authUser">, {{ authUser.displayName }}</span></h1>
+        <!-- Welcome message -->
+        <h1>Welcome back<span v-if="authUser">, {{ authUser.displayName }}</span></h1>
         <p>Let's get back to work!</p>
       </v-col>
       <v-col sm="12" md="4">

@@ -1,21 +1,20 @@
 <template>
   <v-app>
-    <v-toolbar dense app max-height="10%" color="primary">
+    <v-app-bar dense app max-height="10%" color="primary">
       <v-toolbar-title>Homework App</v-toolbar-title>
       <v-spacer/>
-      <router-link to="/home">Home</router-link> |
-      <router-link to="/classes">Classes</router-link> |
-      <router-link to="/my-day">My Day</router-link> |
-      <router-link to="/achievements">Achievements</router-link> |
-      <router-link to="/leaderboard">Leaderboard</router-link> |
+      <router-link class="link" to="/home">Home</router-link> |
+      <router-link class="link" to="/classes">Classes</router-link> |
+      <router-link class="link" to="/my-day">My Day</router-link> |
+      <router-link class="link" to="/achievements">Achievements</router-link> |
+      <router-link class="link" to="/leaderboard">Leaderboard</router-link> |
       <div class="text-center">
         <v-menu offset-y>
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-                color="primary"
-                dark
                 v-bind="attrs"
                 v-on="on"
+                text
             >
               Dropdown
             </v-btn>
@@ -33,20 +32,21 @@
           </v-list>
         </v-menu>
       </div>
-    </v-toolbar>
+    </v-app-bar>
 
-    <v-content v-if="authUser">
+    <v-main v-if="authUser">
       <router-view :authUser="authUser"></router-view>
-    </v-content>
-    <v-container color="warning">
+    </v-main>
+    <v-container v-else color="warning">
       <p>Please log in to see information</p>
     </v-container>
   </v-app>
 </template>
 
 <script>
-import {db} from "./config/firebase"
-import firebase from "firebase";
+import {firebase, db} from "./config/firebase";
+
+
 export default {
   name: 'App',
 
@@ -56,7 +56,6 @@ export default {
 
   data(){
     return{
-      classes: [],
       authUser: null,
       userDoc: null,
     }
@@ -77,19 +76,11 @@ export default {
     logout(){
       firebase.auth().signOut();
     },
-
-    test(){
-      db.collection('users').doc("csa1YEw10gPURl2mfPZgg6D2TRO2").get().then((snapshot) => {
-      console.log(snapshot.data())})
-      // db.collection('users')
-      //     .add({id: this.authUser.uid, name: this.authUser.displayName});
-    }
   },
 
   created: function(){
     firebase.auth().onAuthStateChanged((user) => {
       if(user){
-        console.log(user);
         this.authUser = user;
         //add user to firebase if they aren't there already
         db.collection('users').doc(this.authUser.uid).get()
@@ -101,19 +92,19 @@ export default {
                       console.error(error)
                     })
               }
+
             })
       } else {
-        console.log('not signed in');
-
         this.authUser = null;
       }
     })
-  }
+  },
 };
 </script>
 
 <style>
-.v-toolbar_content .v-application a{
-  color: dimgrey;
+.v-application a.link {
+  color: black;
+  text-decoration: none;
 }
 </style>

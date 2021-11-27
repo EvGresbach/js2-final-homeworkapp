@@ -1,19 +1,18 @@
 <template>
   <div>
-    <h2>{{cClass.name}}</h2>
+    <h2>{{userClass.name}}</h2>
     <v-list></v-list>
   </div>
 </template>
 
 <script>
 
-import Class from "@/models/Class";
 
 export default {
   name: "Class",
   props: {
-    cClass: {
-      type: Class,
+    userClass: {
+      type: Object,
       required: true,
     }
   },

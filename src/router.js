@@ -15,11 +15,11 @@ const router = new VueRouter({
     routes: [
         {path: '/', component: Home, props: true,},
         {name: 'home', path: '/home', component: Home, props: true,},
-        {name: 'classes', path: '/classes', component: Classes},
-        {name: 'my-day', path: '/my-day', component: MyDay},
-        {name: 'achievements', path: '/achievements', component: Achievements},
-        {name: 'leaderboard', path: '/leaderboard', component: Leaderboard},
-        {name: 'profile', path: '/profile', component: Profile},
+        {name: 'classes', path: '/classes', component: Classes, props: true,},
+        {name: 'my-day', path: '/my-day', component: MyDay, props: true,},
+        {name: 'achievements', path: '/achievements', component: Achievements, props: true,},
+        {name: 'leaderboard', path: '/leaderboard', component: Leaderboard, props: true,},
+        {name: 'profile', path: '/profile', component: Profile, props: true,},
     ]
 })
 
