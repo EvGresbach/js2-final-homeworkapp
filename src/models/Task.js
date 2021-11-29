@@ -1,8 +1,8 @@
 function Task(name, description, time, dueDate){
-    this.name = name || "Assignment";
+    this.name = name || "";
     this.description = description || '';
     this.time = time || 0;
-    this.dueDate = dueDate || null;
+    this.dueDate = dueDate || "";
     this.complete = false;
 
     //change completion status

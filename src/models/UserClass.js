@@ -34,6 +34,7 @@ UserClass.fromFirestore = function(snapshot, options){
     userClass._id = snapshot.id;
     userClass._path = snapshot.ref.path;
 
+
     return userClass;
 }
 
