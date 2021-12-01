@@ -5,6 +5,12 @@ function Task(name, description, time, dueDate){
     this.dueDate = dueDate || "";
     this.complete = false;
 
+    this.formatDate = function(){
+        //return date as month day year
+        let date = this.dueDate.split('-');
+        return date[1] + "/" + date[2] + "/" + date[0];
+    }
+
     //change completion status
     this.toggleComplete = function(){
         this.complete = !this.complete;

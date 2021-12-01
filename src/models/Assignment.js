@@ -28,8 +28,10 @@ function Assignment(name, description, time, dueDate){
             this.time += parseInt(this.tasks[i].time);
         }
     }
+
     //to firebase to save only certain fields
     this.toFirestore = function(){
+        //call toFirestore for each task so it moves to firebase okay
         for (let i = 0; i < this.tasks.length; i++) {
             this.tasks[i] = this.tasks[i].toFirestore();
         }
@@ -49,18 +51,24 @@ Assignment.prototype.constructor = Assignment;
 //from firebase to turn back into an assignment
 Assignment.fromFirestore = function(snapshot, options){
     const data = snapshot.data(options);
-    const assignment = new Assignment(new Task(data.name, data.description, data.time, data.dueDate));
+    const assignment = new Assignment(data.name, data.description, data.time, data.date);
 
     if(data.complete === true)
         assignment.complete = true;
 
-    assignment.tasks = data.tasks;
+    for (let i = 0; i < data.tasks.length; i++) {
+        var simple = data.tasks[i];
+        var task = new Task(simple.name, simple.description, simple.time, simple.date);
+        console.log(task);
+        if(simple.complete === true)
+            task.complete = true;
+        assignment.tasks.push(task);
+    }
+    console.log("Data: ", data.tasks);
+    console.log("Assignment", assignment.tasks);
     assignment._id = snapshot.id;
     assignment._path = snapshot.ref.path;
-
-    console.log("Data: ", data.tasks);
-    console.log("Assignment: ", assignment.tasks);
-
+    console.log(assignment);
     return assignment;
 }
 
