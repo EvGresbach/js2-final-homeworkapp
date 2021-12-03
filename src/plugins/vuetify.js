@@ -11,6 +11,8 @@ export default new Vuetify({
                 primary: "#EDCA00",
                 plight: "#F6ED91",
                 secondary: "#0024ED",
+                slight: "#4930fc",
+                sdark: "#000ee2",
             }
         }
     }
