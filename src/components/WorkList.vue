@@ -276,10 +276,10 @@ name: "WorkList",
     return {
       assignments: db.collection("users").doc(this.authUser.uid)
           .collection("classes").doc(this.userClass._id)
-          .collection('work').orderBy("assignment").withConverter(AssignmentModel),
+          .collection('assignments').withConverter(AssignmentModel),
       tests: db.collection("users").doc(this.authUser.uid)
           .collection("classes").doc(this.userClass._id)
-          .collection('work').orderBy("test").withConverter(TestModel),
+          .collection('tests').withConverter(TestModel),
     }
   },
 
@@ -295,7 +295,7 @@ name: "WorkList",
       //add assignment to db
       db.collection("users").doc(this.authUser.uid)
           .collection("classes").doc(this.userClass._id)
-          .collection('work').add(this.newAssignment.toFirestore())
+          .collection('assignments').add(this.newAssignment.toFirestore())
           .then((docRef) => {
             console.log("Success: Assignment " + this.newAssignment.name + " added");
             for (let i = 0; i < this.newAssignment.tasks.length; i++) {
@@ -316,10 +316,11 @@ name: "WorkList",
     addTest(){
       db.collection("users").doc(this.authUser.uid)
           .collection("classes").doc(this.userClass._id)
-          .collection('work').add(this.newTest.toFirestore())
+          .collection('tests').add(this.newTest.toFirestore())
           .then(() => {
             console.log("Success: Test " + this.newTest.name + " added");
             this.addTestDialog = false;
+            this.newTest = new Test();
           })
           .catch((error) => {
             console.error(error)

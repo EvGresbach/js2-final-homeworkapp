@@ -63,7 +63,7 @@ name: "Assignment",
     return{
       tasks: db.collection("users").doc(this.path[1])
           .collection("classes").doc(this.path[3])
-          .collection('work').doc(this.path[5])
+          .collection('assignments').doc(this.path[5])
           .collection('tasks').withConverter(TaskModel),
     }
   },
@@ -72,7 +72,7 @@ name: "Assignment",
       task.toggleComplete();
       db.collection("users").doc(this.path[1])
           .collection("classes").doc(this.path[3])
-          .collection('work').doc(this.path[5])
+          .collection('assignments').doc(this.path[5])
           .collection('tasks').doc(task._id).update({complete: task.complete})
           .then(() => {
             console.log("Success: Task " + task.name + " updated");
@@ -89,7 +89,7 @@ name: "Assignment",
     editTask(){
       db.collection("users").doc(this.path[1])
           .collection("classes").doc(this.path[3])
-          .collection('work').doc(this.path[5])
+          .collection('assignments').doc(this.path[5])
           .collection('tasks').doc(this.taskToEdit._id)
           .update({
             name: this.taskToEdit.name,

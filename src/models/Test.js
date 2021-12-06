@@ -14,6 +14,7 @@ function Test(name, description, time, dueDate){
             time: this.time,
             date: this.dueDate,
             complete: this.complete,
+            deleted: this.deleted,
             test: true,
         }
     }

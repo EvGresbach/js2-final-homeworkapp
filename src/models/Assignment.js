@@ -33,7 +33,7 @@ function Assignment(name, description, time, dueDate){
         console.log(remaining);
         this.remainingTime = 0;
         for(var i = 0; i < remaining.length; i++){
-            this.remainingTime += parseInt(remaining[i].time);
+            this.remainingTime -= parseInt(remaining[i].time);
         }
     }
 
@@ -49,6 +49,7 @@ function Assignment(name, description, time, dueDate){
             time: this.time,
             date: this.dueDate,
             complete: this.complete,
+            deleted: this.deleted,
             assignment: true,
         }
     }
@@ -72,7 +73,6 @@ Assignment.fromFirestore = function(snapshot, options){
 
     assignment._id = snapshot.id;
     assignment._path = snapshot.ref.path;
-    console.log(assignment)
     return assignment;
 }
 

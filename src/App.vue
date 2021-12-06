@@ -3,35 +3,37 @@
     <v-app-bar dense app max-height="10%" color="primary">
       <v-toolbar-title>Homework App</v-toolbar-title>
       <v-spacer/>
-      <router-link class="link" to="/home">Home</router-link> |
-      <router-link class="link" to="/classes">Classes</router-link> |
-      <router-link class="link" to="/my-day">My Day</router-link> |
-      <router-link class="link" to="/achievements">Achievements</router-link> |
-      <router-link class="link" to="/leaderboard">Leaderboard</router-link> |
-      <div class="text-center">
-        <v-menu offset-y>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-                v-bind="attrs"
-                v-on="on"
-                text
-            >
-              Dropdown
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item>
-              <router-link to="/profile">Profile</router-link>
-            </v-list-item>
-            <v-list-item v-if="!authUser" @click="login">
-              <v-list-item-title>Login</v-list-item-title>
-            </v-list-item>
-            <v-list-item v-else @click="logout">
-              <v-list-item-title>Logout</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </div>
+      <v-btn class="nav" tile text><router-link class="link" to="/home">Home</router-link></v-btn>|
+      <v-btn class="nav" tile text><router-link class="link" to="/classes">Classes</router-link></v-btn>|
+      <v-btn class="nav" tile text><router-link class="link" to="/my-day">My Day</router-link></v-btn>|
+<!--      <router-link class="link" to="/achievements">Achievements</router-link> |-->
+<!--      <router-link class="link" to="/leaderboard">Leaderboard</router-link> |-->
+      <v-btn class="nav" tile text v-if="!authUser" @click="login">Login</v-btn>
+      <v-btn class="nav" tile text v-else @click="logout">Logout</v-btn>
+<!--      <div class="text-center">-->
+<!--        <v-menu offset-y>-->
+<!--          <template v-slot:activator="{ on, attrs }">-->
+<!--            <v-btn-->
+<!--                v-bind="attrs"-->
+<!--                v-on="on"-->
+<!--                text-->
+<!--            >-->
+<!--              Profile-->
+<!--            </v-btn>-->
+<!--          </template>-->
+<!--          <v-list>-->
+<!--            <v-list-item>-->
+<!--              <router-link to="/profile">Profile</router-link>-->
+<!--            </v-list-item>-->
+<!--            <v-list-item v-if="!authUser" @click="login">-->
+<!--              <v-list-item-title>Login</v-list-item-title>-->
+<!--            </v-list-item>-->
+<!--            <v-list-item v-else @click="logout">-->
+<!--              <v-list-item-title>Logout</v-list-item-title>-->
+<!--            </v-list-item>-->
+<!--          </v-list>-->
+<!--        </v-menu>-->
+<!--      </div>-->
     </v-app-bar>
 
     <v-main v-if="authUser">
@@ -106,5 +108,11 @@ export default {
 .v-application a.link {
   color: black;
   text-decoration: none;
+}
+.nav.v-btn:before{
+  background-color: inherit;
+}
+.nav.v-btn:hover, .nav.v-btn:hover a.link{
+  color: dimgray;
 }
 </style>

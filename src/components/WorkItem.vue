@@ -9,7 +9,7 @@
               {{item.remainingTime}}/{{item.time}}
             </div>
             <div class="col col-xs-12 col-sm-2">
-              <span :class="item.dueDate > today ? 'red--text' : ''">{{item.formatDate()}}</span>
+              <span :class="item.dueDate < today ? 'red--text' : ''">{{item.formatDate()}}</span>
             </div>
           </div>
         </v-expansion-panel-header>
