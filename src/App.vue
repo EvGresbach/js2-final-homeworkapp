@@ -39,7 +39,7 @@
     <v-main v-if="authUser">
       <router-view :authUser="authUser"></router-view>
     </v-main>
-    <v-container v-else color="warning">
+    <v-container v-else class="mt-12 red--text">
       <p>Please log in to see information</p>
     </v-container>
   </v-app>
@@ -77,6 +77,7 @@ export default {
     },
     logout(){
       firebase.auth().signOut();
+      this.authUser = null;
     },
   },
 
