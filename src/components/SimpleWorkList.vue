@@ -5,7 +5,7 @@
         <v-list-item-content>
           <v-list-item-title>{{item.name}}</v-list-item-title>
           <v-list-item-subtitle>Time Left: {{item.remainingTime}}</v-list-item-subtitle>
-          <v-list-item-subtitle>Due Date: {{item.formatDate()}}</v-list-item-subtitle>
+          <v-list-item-subtitle :class="item.dueDate < today ? 'red--text' : ''">Due Date: {{item.formatDate()}}</v-list-item-subtitle>
         </v-list-item-content>
         <v-list-item-action>
           <v-btn color="secondary" @click="$emit('add-to-my-day', item)"><v-icon>mdi-plus</v-icon></v-btn>
@@ -49,7 +49,15 @@ name: "SimpleWorkItem",
       //get all assignments and tests that are not completed or deleted and sort by due date
       let arr = this.assignments.concat(this.tests).filter(work => !work.complete && !work.deleted);
       return arr.sort((a, b)=>{return a.dueDate - b.dueDate;});
-    }
+    },
+    today(){
+      let today = new Date();
+      var dd = (today.getDate() < 10 ? '0' : '') + today.getDate();
+      var MM = ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1);
+      var yyyy = today.getFullYear();
+      today = yyyy + '-' + MM + '-' + dd;
+      return today;
+    },
   }
 }
 </script>

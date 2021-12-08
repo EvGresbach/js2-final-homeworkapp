@@ -16,8 +16,7 @@
 <!--            <v-btn-->
 <!--                v-bind="attrs"-->
 <!--                v-on="on"-->
-<!--                text-->
-<!--            >-->
+<!--                text>-->
 <!--              Profile-->
 <!--            </v-btn>-->
 <!--          </template>-->
@@ -62,7 +61,6 @@ export default {
       userDoc: null,
     }
   },
-
   methods: {
     login(){
       let provider = new firebase.auth.GoogleAuthProvider();
@@ -79,6 +77,9 @@ export default {
       firebase.auth().signOut();
       this.authUser = null;
     },
+    test(){
+      console.log(this.classes);
+    }
   },
 
   created: function(){
@@ -90,7 +91,11 @@ export default {
             .then((snapshot) => {
               if(!snapshot.data()) {
                 db.collection('users').doc(this.authUser.uid)
-                    .set({name: this.authUser.displayName})
+                    .set({
+                      name: this.authUser.displayName,
+                      workTime: 0,
+                      lastLoggedIn: new Date(),
+                    })
                     .catch((error) => {
                       console.error(error)
                     })

@@ -65,8 +65,6 @@ name: "SimpleWorkIte",
       var MM = ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1);
       var yyyy = today.getFullYear();
       today = yyyy + '-' + MM + '-' + dd;
-      console.log(this.item.dueDate)
-      console.log(today);
       return today;
     }
   }

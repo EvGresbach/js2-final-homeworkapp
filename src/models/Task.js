@@ -1,7 +1,7 @@
 function Task(name, description, time, dueDate){
     this.name = name || "";
     this.description = description || '';
-    this.time = time || 0;
+    this.time = time || '';
     this.dueDate = dueDate || "";
     this.complete = false;
     this.deleted = false;

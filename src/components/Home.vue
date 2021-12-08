@@ -1,38 +1,80 @@
 <template>
   <v-container>
     <v-row>
-      <v-col sm="12" md="8">
+      <v-col col="12" sm="12" md="8">
         <!-- Welcome message -->
         <h1>Welcome back<span v-if="authUser">, {{ authUser.displayName }}</span></h1>
         <p>Let's get back to work!</p>
       </v-col>
-      <v-col sm="12" md="4">
-        <!--  leaderboard overview  -->
-          <h4>Today's Top Scores</h4>
-          <div class="container">
-          </div>
-      </v-col>
+<!--      <v-col sm="12" md="4">-->
+<!--        &lt;!&ndash;  leaderboard overview  &ndash;&gt;-->
+<!--          <h4>Today's Top Scores</h4>-->
+<!--          <div class="container">-->
+<!--          </div>-->
+<!--      </v-col>-->
     </v-row>
     <v-row>
-      <v-col sm="12" md="4">
+      <v-col col="12" sm="12" md="6">
         <!--  Work Overview  -->
-        <h4>Stuff to do</h4>
         <div class="container">
-
+          <v-tabs fixed-tabs>
+            <v-tab>Overdue</v-tab>
+            <v-tab>Today</v-tab>
+            <v-tab>This week</v-tab>
+            <!-- Overdue -->
+            <v-tab-item>
+              <v-card flat>
+                <v-list>
+                  <v-list-item v-for="item in overdue" :key="item._id">
+                    <v-layout justify-space-between>
+                      <span>{{item.name}}</span>
+                      <span>{{item.time}}</span>
+                      <span :class="item.date < today ? 'red--text' : ''">{{item.date}}</span>
+                    </v-layout>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-tab-item>
+            <!-- Today -->
+            <v-tab-item>
+              <v-card flat>
+                <v-list>
+                  <v-list-item v-for="item in dueToday" :key="item._id">
+                    <v-layout justify-space-between>
+                      <span>{{item.name}}</span>
+                      <span :class="item.date < today ? 'red--text' : ''">{{item.date}}</span>
+                    </v-layout>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-tab-item>
+            <!-- This Week -->
+            <v-tab-item>
+              <v-card flat>
+                <v-list>
+                  <v-list-item v-for="item in dueThisWeek" :key="item._id">
+                    <v-layout justify-space-between>
+                      <span>{{item.name}}</span>
+                      <span :class="item.date < today ? 'red--text' : ''">{{item.date}}</span>
+                    </v-layout>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-tab-item>
+          </v-tabs>
         </div>
       </v-col>
-      <v-col sm="12" md="4">
-        <!--  current badges  -->
-        <h4>Achievements</h4>
-        <div class="container">
+<!--      <v-col sm="12" md="4">-->
+<!--        &lt;!&ndash;  current badges  &ndash;&gt;-->
+<!--        <h4>Achievements</h4>-->
+<!--        <div class="container">-->
 
-        </div>
-      </v-col>
-      <v-col sm="12" md="4">
+<!--        </div>-->
+<!--      </v-col>-->
+      <v-col col="12" sm="12" md="auto">
         <!--  recommended work  -->
         <h4>Recommended Work</h4>
         <div class="container">
-
         </div>
       </v-col>
     </v-row>
@@ -43,6 +85,9 @@
 
 <script>
 
+import {db} from "@/config/firebase";
+import UserClassModel from "@/models/UserClass";
+
 export default {
   name: "Home",
   props: {
@@ -50,38 +95,140 @@ export default {
       required: true,
     }
   },
+  data(){
+    return{
+      classes: [],
+      allWork: [],
+    }
+  },
+  firestore() {
+    return {
+      classes: db.collection('users').doc(this.authUser.uid)
+          .collection(UserClassModel.collectionName).withConverter(UserClassModel),
+    }
+  },
   methods: {
-    // addBadges(){
-    //   let arr = [
-    //     {minRequirement: "1", type: "Assignment", message: "Complete 1 Assignment", badgeKey: "Complete x"},
-    //     {minRequirement: "5", type: "Assignment", message: "Complete 5 Assignments", badgeKey: "Complete x"},
-    //     {minRequirement: "10", type: "Assignment", message: "Complete 10 Assignments", badgeKey: "Complete x"},
-    //     {minRequirement: "25", type: "Assignment", message: "Complete 25Assignments", badgeKey: "Complete x"},
-    //     {minRequirement: "50", type: "Assignment", message: "Complete 50 Assignments", badgeKey: "Complete x"},
-    //     {minRequirement: "100", type: "Assignment", message: "Complete 100 Assignments", badgeKey: "Complete x"},
-    //     {minRequirement: "1", type: "Test", message: "Complete 1 Test", badgeKey: "Complete x"},
-    //     {minRequirement: "5", type: "Test", message: "Complete 5 Tests", badgeKey: "Complete x"},
-    //     {minRequirement: "10", type: "Test", message: "Complete 10 Tests", badgeKey: "Complete x"},
-    //     {minRequirement: "25", type: "Test", message: "Complete 25 Tests", badgeKey: "Complete x"},
-    //     {minRequirement: "50", type: "Test", message: "Complete 50 Tests", badgeKey: "Complete x"},
-    //     {minRequirement: "100", type: "Test", message: "Complete 100 Tests", badgeKey: "Complete x"},
-    //     {minRequirement: "10", type: "Assignment", message: "Have an Assignment Over 10 Minutes", badgeKey: "Over time,"},
-    //     {minRequirement: "30", type: "Assignment", message: "Have an Assignment Over 30 Minutes"},
-    //     {minRequirement: "60", type: "Assignment", message: "Have an Assignment Over 60 Minutes"},
-    //     {minRequirement: "90", type: "Assignment", message: "Have an Assignment Over 90 Minutes"},
-    //     {minRequirement: "120", type: "Assignment", message: "Have an Assignment Over 120 Minutes"},
-    //     {minRequirement: "180", type: "Assignment", message: "Have an Assignment Over 180 Minutes"},
-    //     {minRequirement: "10", type: "Test", message: "Have an Test Over 10 Minutes"},
-    //     {minRequirement: "30", type: "Test", message: "Have an Test Over 30 Minutes"},
-    //     {minRequirement: "60", type: "Test", message: "Have an Test Over 60 Minutes"},
-    //     {minRequirement: "90", type: "Test", message: "Have an Test Over 90 Minutes"},
-    //     {minRequirement: "120", type: "Test", message: "Have an Test Over 120 Minutes"},
-    //     {minRequirement: "180", type: "Test", message: "Have an Test Over 180 Minutes"},
-    //
-    //   ]
-    // }
+    getAssignments(path){
+      db.collection(path[0]).doc(path[1]) //user
+          .collection(path[2]).doc(path[3]) //class
+          .collection("assignments").get()
+          .then((snapshot) => {
+            console.log("Found " + snapshot.size + " assignments");
+            snapshot.forEach((doc) => {
+              let assignment = doc.data();
+              if(!assignment.complete && !assignment.deleted){
+                assignment._path = doc.ref.path;
+                assignment._id = doc.id;
+                this.allWork.push(assignment);
+                console.log("Assignment Read: ", assignment);
+              }
+            })
+          })
+          .catch(error => {console.error(error)})
+    },
+    getTests(path){
+      db.collection(path[0]).doc(path[1]) //user
+          .collection(path[2]).doc(path[3]) //class
+          .collection("tests").get()
+          .then((snapshot) => {
+            console.log("Found " + snapshot.size + " tests");
+            snapshot.forEach((doc) => {
+              let test = doc.data();
+              if(!test.complete && !test.deleted) {
+                test._path = doc.ref.path;
+                test._id = doc.id;
+                this.allWork.push(test);
+                console.log("Test Read: ", test);
+              }
+            })
+          })
+          .catch(error => {console.error(error)})
+    },
+    getTasks(path){
+      console.log(path);
+      db.collection(path[0]).doc(path[1]) //user
+          .collection(path[2]).doc(path[3]) //class
+          .collection(path[4]).doc(path[5]) //assignment
+          .collection('tasks').get()
+          .then(snapshot => {
+            console.log("Found " + snapshot.size + " tasks");
+            snapshot.forEach(doc => {
+              let task = doc.data();
+              if(!task.complete && !task.deleted) {
+                task._path = doc.ref.path;
+                task._id = doc.id;
+                this.allWork.push(task);
+                console.log("task Read: ", task);
+              }
+            })
+          })
+          .catch(error => {console.error(error)})
+    },
+
+  },
+  watch: {
+    classes: function(){
+      for (let i = 0; i < this.classes.length; i++) {
+        let path = this.classes[i]._path.split('/');
+        this.getAssignments(path);
+        this.getTests(path);
+      }
+    },
+    allWork: function(){
+      for (let i = 0; i < this.allWork.length; i++) {
+        //check that it is an assignment and it hasn't already been read
+        if(this.allWork[i].assignment && !this.allWork[i].read){
+          let path = this.allWork[i]._path.split('/');
+          this.getTasks(path);
+          this.allWork[i].read = true;
+        }
+      }
+    }
+  },
+  computed: {
+    today(){
+      let today = new Date();
+      var dd = (today.getDate() < 10 ? '0' : '') + today.getDate();
+      var MM = ((today.getMonth() + 1) < 10 ? '0' : '') + (today.getMonth() + 1);
+      var yyyy = today.getFullYear();
+      today = yyyy + '-' + MM + '-' + dd;
+      return today;
+    },
+    overdue: function(){
+
+      return this.allWork.filter(item => item.date < this.today)
+    },
+    dueToday: function(){
+      return this.allWork.filter((item) => {
+        console.log( item.date === this.today)
+        return item.date === this.today;
+      })
+    },
+    dueThisWeek: function(){
+      //get first and last day of week
+      var today = new Date();
+      var day = today.getDay();
+      var first = today.getDate() - day + (day == 0 ? -7:0);
+      let last = first + 6;
+      let firstDay = new Date(today.setDate(first));
+      let lastDay = new Date(today.setDate(last));
+      console.log(lastDay)
+      var dd = (firstDay.getDate() < 10 ? '0' : '') + firstDay.getDate();
+      var MM = ((firstDay.getMonth() + 1) < 10 ? '0' : '') + (firstDay.getMonth() + 1);
+      var yyyy = firstDay.getFullYear();
+      firstDay = yyyy + '-' + MM + '-' + dd;
+
+      dd = (lastDay.getDate() < 10 ? '0' : '') + lastDay.getDate();
+      MM = ((lastDay.getMonth() + 1) < 10 ? '0' : '') + (lastDay.getMonth() + 1);
+      yyyy = lastDay.getFullYear();
+      lastDay = yyyy + '-' + MM + '-' + dd;
+      return this.allWork.filter(item => item.date > firstDay && item.date < lastDay && !item.complete)
+    }
+    // x  < y  <  z
+    // 12 < 15 < 16
   }
 }
+// :class="item.date < today ? 'red--text' : ''"
 </script>
 
 <style scoped>

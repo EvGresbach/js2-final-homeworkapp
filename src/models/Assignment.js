@@ -20,7 +20,7 @@ function Assignment(name, description, time, dueDate){
 
     //use to update total assignment time
     this.updateTime = function(){
-        this.time = 0
+        this.time = parseInt(this.time);
         for(var i = 0; i < this.tasks.length; i++){
             this.time += parseInt(this.tasks[i].time);
         }
@@ -33,7 +33,7 @@ function Assignment(name, description, time, dueDate){
         console.log(remaining);
         this.remainingTime = 0;
         for(var i = 0; i < remaining.length; i++){
-            this.remainingTime -= parseInt(remaining[i].time);
+            this.remainingTime += parseInt(remaining[i].time);
         }
     }
 

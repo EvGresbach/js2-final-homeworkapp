@@ -61,6 +61,11 @@ name: "TaskList",
           })
     },
   },
+  watch:{
+    tasks: function(){
+      this.item.tasks = this.tasks;
+    }
+  },
   computed: {
     path(){
       return this.item._path.split('/');
