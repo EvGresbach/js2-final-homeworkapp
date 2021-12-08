@@ -82,7 +82,12 @@ Assignment.prototype.constructor = Assignment;
 Assignment.fromFirestore = function(snapshot, options){
     const data = snapshot.data(options);
     const assignment = new Assignment(data.name, data.description, data.time, data.date);
+
     assignment.baseTime = data.baseTime;
+    if(assignment.time == '') {
+        assignment.time = assignment.baseTime;
+        assignment.remainingTime = assignment.baseTime;
+    }
     if(data.complete === true){
         assignment.complete = true;
         assignment.remainingTime = 0;
