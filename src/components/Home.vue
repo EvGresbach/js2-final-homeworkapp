@@ -42,6 +42,7 @@
                   <v-list-item v-for="item in dueToday" :key="item._id">
                     <v-layout justify-space-between>
                       <span>{{item.name}}</span>
+                      <span>{{item.time}}</span>
                       <span :class="item.date < today ? 'red--text' : ''">{{item.date}}</span>
                     </v-layout>
                   </v-list-item>
@@ -55,6 +56,7 @@
                   <v-list-item v-for="item in dueThisWeek" :key="item._id">
                     <v-layout justify-space-between>
                       <span>{{item.name}}</span>
+                      <span>{{item.time}}</span>
                       <span :class="item.date < today ? 'red--text' : ''">{{item.date}}</span>
                     </v-layout>
                   </v-list-item>
@@ -126,6 +128,9 @@ export default {
             snapshot.forEach((doc) => {
               let assignment = doc.data();
               if(!assignment.complete && !assignment.deleted){
+                if(assignment.time == '')
+                  assignment.time = assignment.baseTime;
+
                 assignment._path = doc.ref.path;
                 assignment._id = doc.id;
                 this.allWork.push(assignment);
