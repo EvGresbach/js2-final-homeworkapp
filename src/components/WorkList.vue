@@ -312,7 +312,7 @@ name: "WorkList",
     addTask() {
       this.addTaskDialog = false;
       this.newAssignment.tasks.push(this.newSubTask);
-      this.newAssignment.updateTime();
+      this.newAssignment.updateTime(this.newAssignment.tasks);
       this.newSubTask = new Task();
     },
 

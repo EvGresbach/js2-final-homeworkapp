@@ -62,7 +62,7 @@ function Assignment(name, description, time, dueDate){
         for (let i = 0; i < this.tasks.length; i++) {
             this.tasks[i] = this.tasks[i].toFirestore();
         }
-        this.updateTime();
+        this.updateTime(this.tasks);
         return{
             name: this.name,
             description: this.description,
