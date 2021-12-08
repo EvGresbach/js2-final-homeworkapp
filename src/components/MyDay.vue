@@ -26,7 +26,7 @@
 
         <v-spacer/>
         <v-divider/>
-        <simple-work-list @add-to-my-day="addToMyDay" v-if="currentClass.name !== null" :currentClass="currentClass"></simple-work-list>
+        <simple-work-list @add-to-my-day="addToMyDay" v-if="currentClass.name !== null" :key="currentClass._id" :currentClass="currentClass"></simple-work-list>
       </v-navigation-drawer>
     </div>
     <div class="col col-xs-12 col-sm-9">
@@ -52,6 +52,7 @@ export default {
 name: "MyDay",
   props: {
     authUser: {required: true},
+    list: Array,
   },
   data(){
     return{
@@ -71,7 +72,6 @@ name: "MyDay",
             .collection("classes").withConverter(UserClassModel),
       }
   } ,
-  // TODO: Calculate total time and num tasks to display on right
   methods: {
     addToMyDay(item){
       if(!this.myDay.includes(item)){
@@ -92,7 +92,7 @@ name: "MyDay",
       }
       return total;
     }
-  }
+  },
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-list>
+    <v-list v-if="work.length > 0">
       <v-list-item v-for="item in work" :key="item._id" three-line>
         <v-list-item-content>
           <v-list-item-title>{{item.name}}</v-list-item-title>
@@ -12,7 +12,7 @@
         </v-list-item-action>
       </v-list-item>
     </v-list>
-    <div>No Current Work for {{currentClass.name}}</div>
+    <div v-else>No Current Work for {{currentClass.name}}</div>
   </div>
 
 </template>
@@ -58,7 +58,7 @@ name: "SimpleWorkItem",
       today = yyyy + '-' + MM + '-' + dd;
       return today;
     },
-  }
+  },
 }
 </script>
 

@@ -36,7 +36,7 @@
     </v-app-bar>
 
     <v-main v-if="authUser">
-      <router-view :authUser="authUser"></router-view>
+      <router-view :authUser="authUser" @add-to-my-day="addToMyDay" :list="myDay"></router-view>
     </v-main>
     <v-container v-else class="mt-12 red--text">
       <p>Please log in to see information</p>
@@ -59,6 +59,8 @@ export default {
     return{
       authUser: null,
       userDoc: null,
+
+      myDay: [],
     }
   },
   methods: {
@@ -77,8 +79,8 @@ export default {
       firebase.auth().signOut();
       this.authUser = null;
     },
-    test(){
-      console.log(this.classes);
+    addToMyDay(item){
+      this.myDay.push(item);
     }
   },
 

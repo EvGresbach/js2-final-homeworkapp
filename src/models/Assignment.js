@@ -2,6 +2,8 @@ import Task from "@/models/Task";
 
 function Assignment(name, description, time, dueDate){
     Task.call(this, name, description, time, dueDate)
+    //base time so we can correctly add task time
+    this.baseTime = 0;
 
     //list of tasks
     this.tasks = [];
@@ -20,9 +22,10 @@ function Assignment(name, description, time, dueDate){
 
     //use to update total assignment time
     this.updateTime = function(){
-        this.time = parseInt(this.time);
+        this.time = parseInt(this.baseTime);
         for(var i = 0; i < this.tasks.length; i++){
-            this.time += parseInt(this.tasks[i].time);
+            if(this.tasks[i].time >= 0)
+                this.time += parseInt(this.tasks[i].time);
         }
         this.updateRemainingTime();
     }
@@ -43,9 +46,11 @@ function Assignment(name, description, time, dueDate){
         for (let i = 0; i < this.tasks.length; i++) {
             this.tasks[i] = this.tasks[i].toFirestore();
         }
+        this.updateTime();
         return{
             name: this.name,
             description: this.description,
+            baseTime: this.baseTime,
             time: this.time,
             date: this.dueDate,
             complete: this.complete,

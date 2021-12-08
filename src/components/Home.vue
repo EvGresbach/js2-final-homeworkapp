@@ -1,20 +1,20 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col col="12" sm="12" md="8">
+    <div class="row">
+      <div class=" col col-xs-12 col-sm-8">
         <!-- Welcome message -->
         <h1>Welcome back<span v-if="authUser">, {{ authUser.displayName }}</span></h1>
         <p>Let's get back to work!</p>
-      </v-col>
+      </div>
 <!--      <v-col sm="12" md="4">-->
 <!--        &lt;!&ndash;  leaderboard overview  &ndash;&gt;-->
 <!--          <h4>Today's Top Scores</h4>-->
 <!--          <div class="container">-->
 <!--          </div>-->
 <!--      </v-col>-->
-    </v-row>
-    <v-row>
-      <v-col col="12" sm="12" md="6">
+    </div>
+    <div class="row">
+      <div class="col col-xs-12 col-sm-6">
         <!--  Work Overview  -->
         <div class="container">
           <v-tabs fixed-tabs>
@@ -63,7 +63,7 @@
             </v-tab-item>
           </v-tabs>
         </div>
-      </v-col>
+      </div>
 <!--      <v-col sm="12" md="4">-->
 <!--        &lt;!&ndash;  current badges  &ndash;&gt;-->
 <!--        <h4>Achievements</h4>-->
@@ -71,15 +71,24 @@
 
 <!--        </div>-->
 <!--      </v-col>-->
-      <v-col col="12" sm="12" md="auto">
+      <div class="col col-xs-12  col-sm-6">
         <!--  recommended work  -->
         <h4>Recommended Work</h4>
-        <div class="container">
+        <div class="container pa-0">
+          <v-list>
+            <v-list-item v-for="item in recommended" :key="item._id" class="px-0">
+              <v-list-item-content>
+                <v-layout justify-space-between>
+                  <span>{{item.name}}</span>
+                  <span>{{item.time}}</span>
+                  <span :class="item.date < today ? 'red--text' : ''">{{item.date}}</span>
+                </v-layout>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
         </div>
-      </v-col>
-    </v-row>
-    <!-- TODO: ADD BADGES -->
-<!--    <v-btn @click="addBadges">Add</v-btn>-->
+      </div>
+    </div>
   </v-container>
 </template>
 
@@ -195,14 +204,13 @@ export default {
       return today;
     },
     overdue: function(){
-
-      return this.allWork.filter(item => item.date < this.today)
+      let arr = this.allWork.filter(item => item.date < this.today && !item.complete)
+      return arr.sort((a, b)=>{console.log(a.date, b.date); return a.date - b.date;})
     },
     dueToday: function(){
       return this.allWork.filter((item) => {
-        console.log( item.date === this.today)
-        return item.date === this.today;
-      })
+        return item.date === this.today && !item.complete;
+      }).sort((a, b)=>{return a.date - b.date;})
     },
     dueThisWeek: function(){
       //get first and last day of week
@@ -212,7 +220,8 @@ export default {
       let last = first + 6;
       let firstDay = new Date(today.setDate(first));
       let lastDay = new Date(today.setDate(last));
-      console.log(lastDay)
+
+      //format them to compare with date
       var dd = (firstDay.getDate() < 10 ? '0' : '') + firstDay.getDate();
       var MM = ((firstDay.getMonth() + 1) < 10 ? '0' : '') + (firstDay.getMonth() + 1);
       var yyyy = firstDay.getFullYear();
@@ -222,13 +231,16 @@ export default {
       MM = ((lastDay.getMonth() + 1) < 10 ? '0' : '') + (lastDay.getMonth() + 1);
       yyyy = lastDay.getFullYear();
       lastDay = yyyy + '-' + MM + '-' + dd;
-      return this.allWork.filter(item => item.date > firstDay && item.date < lastDay && !item.complete)
+      //return all items within the first and last day of this week
+      return this.allWork.filter(item => item.date > firstDay && item.date < lastDay && !item.complete).sort((a, b)=>{return a.date - b.date;})
+    },
+    recommended: function(){
+      let arr = this.overdue;
+      arr.concat(this.dueToday);
+      return arr.sort((a, b)=>{return a.date - b.date;});
     }
-    // x  < y  <  z
-    // 12 < 15 < 16
   }
 }
-// :class="item.date < today ? 'red--text' : ''"
 </script>
 
 <style scoped>

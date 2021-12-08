@@ -100,7 +100,8 @@
                   <v-stepper-content step="2">
                     <v-card flat tile>
                       <!-- This is where they should be adding subtasks or estimating the time -->
-                      <v-text-field v-model="newAssignment.time" label="Estimated Time"></v-text-field>
+                      <v-text-field v-model="newAssignment.baseTime" label="Estimated Assignment Time"></v-text-field>
+                      <p>Total Assignment Time: {{newAssignment.time}}</p>
                       <v-list>
                         <v-list-item v-for="task in newAssignment.tasks" :key="task.name">{{task.name}}</v-list-item>
                       </v-list>
@@ -181,10 +182,12 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col col-xs-12 col-sm-10">
+                      <div class="col">
                         <v-textarea v-model="newTest.description" label="Description"></v-textarea>
                       </div>
-                      <div class="col col-xs-12 col-sm-2">
+                    </div>
+                    <div class="row">
+                      <div class="col">
                         <v-text-field v-model="newTest.time" label="Estimated Time"></v-text-field>
                       </div>
                     </div>
@@ -320,12 +323,13 @@ name: "WorkList",
           .collection('assignments').add(this.newAssignment.toFirestore())
           .then((docRef) => {
             console.log("Success: Assignment " + this.newAssignment.name + " added");
+
             for (let i = 0; i < this.newAssignment.tasks.length; i++) {
               db.collection("users").doc(this.authUser.uid)
                   .collection("classes").doc(this.userClass._id)
-                  .collection('work').doc(docRef.id)
+                  .collection('assignments').doc(docRef.id)
                   .collection("tasks").add(this.newAssignment.tasks[i])
-                  .then(() =>{console.log("Success: Task " + this.newAssignment.tasks[i].name + " added")})
+                  .then(() =>{console.log("Success: Task added")})
                   .catch((error) =>{console.error("Error: ", error)} )
             }
 
