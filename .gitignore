@@ -21,3 +21,8 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
+
+# Unused components
+src/components/Achievements.vue
+src/components/Leaderboard.vue
+src/components/Profile.vue
