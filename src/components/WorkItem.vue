@@ -32,7 +32,6 @@
           <!-- Use steppers to guide user through adding assignments -->
           <v-card-title class="justify-center text-h4">Edit {{itemType}}</v-card-title>
           <v-card-text>
-            <!-- TODO: FORM -->
             <v-stepper v-model="slideController">
               <v-stepper-header>
                 <v-stepper-step :complete="slideController > 1" step="1">Get Test Information</v-stepper-step>

@@ -235,8 +235,9 @@ export default {
       return this.allWork.filter(item => item.date > firstDay && item.date < lastDay && !item.complete).sort((a, b)=>{return a.date - b.date;})
     },
     recommended: function(){
-      let arr = this.overdue;
-      arr.concat(this.dueToday);
+      let overdue = this.overdue;
+      let dueToday = this.dueToday
+      let arr = [].concat(overdue, dueToday)
       return arr.sort((a, b)=>{return a.date - b.date;});
     }
   }

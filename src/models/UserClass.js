@@ -6,15 +6,12 @@ function UserClass(name){
     this._id = null;
     this._path = null;
 
-    //TODO: add/delete/finish assignments
     this.addAssignment = function(assignment){
         this.assignments.push(assignment);
     }
     this.deleteAssignment = function(assignment){
         this.assignments.splice(this.assignments.indexOf(assignment));
     }
-    //TODO: //add/delete/finish tests
-
 
     this.toFirestore = function(){
         return{

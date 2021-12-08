@@ -76,7 +76,7 @@ name: "Assignment",
           .collection('tasks').doc(task._id).update({complete: task.complete})
           .then(() => {
             console.log("Success: Task " + task.name + " updated");
-            this.item.updateRemainingTime();
+            this.item.updateRemainingTime(this.tasks);
           })
           .catch((error) => {
             console.error("Failed: Task " + task.name + " - " + error);
@@ -99,7 +99,8 @@ name: "Assignment",
           })
           .then(() => {
             console.log("Success: Task " + this.taskToEdit.name + " updated");
-            this.item.updateTime();
+            this.item.updateTime(this.tasks);
+            this.item.updateRemainingTime();
             this.editTaskDialog = false;
             this.taskToEdit = new Task();
             this.$emit('update');

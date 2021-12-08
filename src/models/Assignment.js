@@ -29,10 +29,26 @@ function Assignment(name, description, time, dueDate){
         }
         this.updateRemainingTime();
     }
+    this.updateTime = function(list){
+        this.time = parseInt(this.baseTime);
+        for(var i = 0; i < list.length; i++){
+            if(list[i].time >= 0)
+                this.time += parseInt(list[i].time);
+        }
+        this.updateRemainingTime(list);
+    }
 
     //update time remaining
     this.updateRemainingTime = function(){
         var remaining = this.tasks.filter(t => !t.complete)
+        console.log(remaining);
+        this.remainingTime = 0;
+        for(var i = 0; i < remaining.length; i++){
+            this.remainingTime += parseInt(remaining[i].time);
+        }
+    }
+    this.updateRemainingTime = function(list){
+        var remaining = list.filter(t => !t.complete)
         console.log(remaining);
         this.remainingTime = 0;
         for(var i = 0; i < remaining.length; i++){
@@ -66,7 +82,7 @@ Assignment.prototype.constructor = Assignment;
 Assignment.fromFirestore = function(snapshot, options){
     const data = snapshot.data(options);
     const assignment = new Assignment(data.name, data.description, data.time, data.date);
-
+    assignment.baseTime = data.baseTime;
     if(data.complete === true){
         assignment.complete = true;
         assignment.remainingTime = 0;
